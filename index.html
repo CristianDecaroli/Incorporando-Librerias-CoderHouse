@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="modal.css">
+    <title>Segunda Entrega del Proyecto Final</title>
+</head>
+<body>
+    <header>
+        <h1 id="titulo">AGREGUE PRODUCTOS AL CARRITO</h1>
+        <div class="divBotonCarrito">
+            <button id="boton-carrito">CARRITO</button>
+        </div>   
+    </header>
+    <main id="contenedor-productos">
+
+    </main>
+    <div class="modal-contenedor">
+        <div class="modal-carrito">
+            <h3>Carrito</h3>
+            <button id="carritoCerrar">Cerrar</button>
+            <div id="carrito-contenedor">
+
+            </div>
+            <p class="precioProducto">Precio total: $<span id="precioTotal">0</span></p>
+            <button id="vaciar-carrito" class="boton-agregar">Limpiar carrito</button>
+        </div>
+    </div>
+    <script defer src="stock.js"></script>
+    <script defer src="modal.js"></script>
+    <script defer src="main.js"></script>
+</body>
+</html>
