@@ -22,7 +22,16 @@ stockProductos.forEach((producto) => {
 
     const boton = document.getElementById(`agregar${producto.id}`) //Creo constante llamando al botón agregar
     boton.addEventListener('click', () => { //Escuchar el click del elemento declarado anteriormente y llamo a la función agregar carrito
-        agregarAlCarrito(producto.id) 
+        agregarAlCarrito(producto.id)
+
+        //////////////////////// SWEET ALERT ////////////////////////
+        Swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'Agregaste este producto al carrito',
+            showConfirmButton: false,
+            timer: 1000
+        })
     })
 })
 
@@ -54,7 +63,7 @@ const actualizarCarrito = () => {
         <p>${prod.nombre}</p>
         <p>Precio: $${prod.precio}</p>
         <p>Cantidad: <span id="cantidad">${prod.cantidad}</span></p>
-        <button onclick="eliminarDelCarrito(${prod.id})" class="boton-eliminar">quitar</button>
+        <button onclick="eliminarDelCarrito(${prod.id})" class="boton-eliminar">X</button>
         `
         contenedorCarrito.appendChild(div) //Inyecto lo declarado arriba 
         localStorage.setItem('carrito', JSON.stringify(carrito)) //Guardo en el storage los arrays en formato string
@@ -71,14 +80,43 @@ const eliminarDelCarrito = (prodId) => {
     const indice = carrito.indexOf(item) //Declaro el indice para hacer el splice
     carrito.splice(indice, 1) //Metodo Splice para eliminar el producto del Array
     actualizarCarrito() //Llamo a la función para que se actualice el DOM en carrito
+
+    //////////////////////// TOASTIFY ////////////////////////
+    Toastify({
+        text: "Eliminaste el producto",
+        duration: 3000,
+        style: {
+            background: "#0e8253",
+          }
+    }).showToast();
     console.log(carrito)
 }
 
 
 //Escuchamos el evento click en el botón vaciar, igualando la longitud a 0, actualizando el carrito
 botonVaciar.addEventListener('click', () => { 
-    carrito.length = 0
-    actualizarCarrito()
+
+    //////////////////////// SWEET ALERT ////////////////////////
+    Swal.fire({
+        title: 'Está seguro?',
+        text: 'Va a vaciar el carrito',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vaciar',
+        cancelButtonText: 'Cancelar', 
+    }).then((result) => {
+        if (result.isConfirmed) {
+            carrito.length = 0
+            actualizarCarrito()
+            Swal.fire(
+                'Carrito limpio!',
+                'El carrito ha sido vaciado',
+                'success'
+            )
+        }
+    })
 })
 
 
