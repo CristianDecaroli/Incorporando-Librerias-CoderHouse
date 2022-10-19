@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "nombre": "Latte",
+        "img": "cafe.jpg",
+        "precio": 300,
+        "cantidad": 1
+    },
+    {
+        "id": 2,
+        "nombre": "Mocka",
+        "img": "cafe.jpg",
+        "precio": 200,
+        "cantidad": 1
+    },
+    {
+        "id": 3,
+        "nombre": "Cappuccino",
+        "img": "cafe.jpg",
+        "precio": 250,
+        "cantidad": 1
+    },
+    {
+        "id": 4,
+        "nombre": "Frappuccino",
+        "img": "cafe.jpg",
+        "precio": 350,
+        "cantidad": 1
+    },
+    {
+        "id": 5,
+        "nombre": "Mocchiato",
+        "img": "cafe.jpg",
+        "precio": 150,
+        "cantidad": 1
+    }
+]

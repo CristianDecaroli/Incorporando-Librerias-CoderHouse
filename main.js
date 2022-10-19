@@ -8,36 +8,45 @@ const cantidadTotal = document.getElementById('cantidadTotal')
 
 let carrito = [] //Creo el array vacío para que cuando el usuario seleccione productos se agreguen a este
 
-//Una vez declarada las variables, recorro mi array de objetos y los pinto en el DOM (Div, clases y demás etiquetas)
-stockProductos.forEach((producto) => {
-    const div = document.createElement('div') 
-    div.classList.add('producto')
-    div.innerHTML = `
-    <h3>${producto.nombre}</h3>
-    <img src=${producto.img}>
-    <p class="precioProducto">Precio:$ ${producto.precio}</p>
-    <button id="agregar${producto.id}" class="boton-agregar">Agregar</button>
-    `
-    contenedorProductos.appendChild(div) //Agrego al DOM el stock de productos con el appendChild
 
-    const boton = document.getElementById(`agregar${producto.id}`) //Creo constante llamando al botón agregar
-    boton.addEventListener('click', () => { //Escuchar el click del elemento declarado anteriormente y llamo a la función agregar carrito
-        agregarAlCarrito(producto.id)
+let getData = () => { //función para obtener la data del json
+    return fetch('data.json')
+    .then ((response) => response.json())
+}
 
-        //////////////////////// SWEET ALERT ////////////////////////
-        Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Agregaste este producto al carrito',
-            showConfirmButton: false,
-            timer: 1000
+
+let init = async () => {
+    let data = await getData();
+    data.forEach((producto) => { //recorro la data y renderizo en el DOM (Div, clases y demás etiquetas)
+        const div = document.createElement('div') 
+        div.classList.add('producto')
+        div.innerHTML = `
+        <h3>${producto.nombre}</h3>
+        <img src=${producto.img}>
+        <p class="precioProducto">Precio:$ ${producto.precio}</p>
+        <button id="agregar${producto.id}" class="boton-agregar">Agregar</button>
+        `
+        contenedorProductos.appendChild(div) //Agrego al DOM el stock de productos con el appendChild
+    
+        const boton = document.getElementById(`agregar${producto.id}`) //Creo constante llamando al botón agregar
+        boton.addEventListener('click', () => { //Escuchar el click del elemento declarado anteriormente y llamo a la función agregar carrito
+            agregarAlCarrito(producto.id)
+    
+            //////////////////////// SWEET ALERT ////////////////////////
+            Swal.fire({
+                position: 'top',
+                icon: 'success',
+                title: 'Agregaste este producto al carrito',
+                showConfirmButton: false,
+                timer: 1000
+            })
         })
     })
-})
+}
 
 
 //Función para agregar productos al carrito usando el ID
-const agregarAlCarrito = (prodId) => {
+const agregarAlCarrito = async (prodId) => {
     const existe = carrito.some (prod => prod.id === prodId) //método some para que evaluar si es true o false, comprobando si el elemento existe en el carrito
     if (existe){
         const prod = carrito.map (prod => { //Método map para modificar la cantidad de productos seleccionados
@@ -45,8 +54,9 @@ const agregarAlCarrito = (prodId) => {
                 prod.cantidad++ //si la condición de arriba se cumple, se agrega un uno más al mismo producto
             }
         })
-    } else { 
-        const item = stockProductos.find((prod) => prod.id === prodId) //Traemos el producto mediante el ID del mismo
+    } else {
+        let data = await getData();
+        const item = data.find((prod) => prod.id === prodId) //Traemos el producto mediante el ID del mismo
         carrito.push(item)
     }
     actualizarCarrito() //Llamo la función que está abajo para actualizar a medida que agrego productos
@@ -66,11 +76,10 @@ const actualizarCarrito = () => {
         <button onclick="eliminarDelCarrito(${prod.id})" class="boton-eliminar">X</button>
         `
         contenedorCarrito.appendChild(div) //Inyecto lo declarado arriba 
-        localStorage.setItem('carrito', JSON.stringify(carrito)) //Guardo en el storage los arrays en formato string
     })
-    
+    localStorage.setItem('carrito', JSON.stringify(carrito)) //Guardo en el storage los arrays en formato string
     console.log(carrito)
-    //Suma la propiedad precio según la cantidad, con valor iniciar del acumulador en 0 utilizando reduce
+    //Sumo la propiedad precio según la cantidad, con valor inicial del acumulador en 0 utilizando reduce
     precioTotal.innerText = carrito.reduce((acc, prod) => acc + prod.cantidad * prod.precio, 0) 
 }
 
@@ -95,7 +104,6 @@ const eliminarDelCarrito = (prodId) => {
 
 //Escuchamos el evento click en el botón vaciar, igualando la longitud a 0, actualizando el carrito
 botonVaciar.addEventListener('click', () => { 
-
     //////////////////////// SWEET ALERT ////////////////////////
     Swal.fire({
         title: 'Está seguro?',
@@ -108,7 +116,7 @@ botonVaciar.addEventListener('click', () => {
         cancelButtonText: 'Cancelar', 
     }).then((result) => {
         if (result.isConfirmed) {
-            carrito.length = 0
+            carrito = []
             actualizarCarrito()
             Swal.fire(
                 'Carrito limpio!',
@@ -127,3 +135,5 @@ document.addEventListener('DOMContentLoaded', () => {
         actualizarCarrito()
     }
 })
+
+init()

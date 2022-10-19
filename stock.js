@@ -1,6 +1,6 @@
 //Declaro Array de objetos, stock de productos
 
-let stockProductos = [
+/* let stockProductos = [
     {
         id: 1,
         nombre: 'Latte',
@@ -36,4 +36,4 @@ let stockProductos = [
         precio: 150,
         cantidad: 1
     }
-]
+] */
