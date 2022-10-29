@@ -16,7 +16,7 @@ let getData = () => { //función para obtener la data del json
 
 
 let init = async () => {
-    let data = await getData();
+    let data = await getData(); //creo variable Data para llamar función anteriormente creada
     data.forEach((producto) => { //recorro la data y renderizo en el DOM (Div, clases y demás etiquetas)
         const div = document.createElement('div') 
         div.classList.add('producto')
@@ -51,7 +51,7 @@ const agregarAlCarrito = async (prodId) => {
     if (existe){
         const prod = carrito.map (prod => { //Método map para modificar la cantidad de productos seleccionados
             if (prod.id === prodId){ //condicion para evaluar mediante el id si el producto elegido es repetido
-                prod.cantidad++ //si la condición de arriba se cumple, se agrega un uno más al mismo producto
+                prod.cantidad++ //si la condición de arriba se cumple, se agrega un uno más al mismo producto (uso de operador avanzado ++)
             }
         })
     } else {
@@ -102,7 +102,7 @@ const eliminarDelCarrito = (prodId) => {
 }
 
 
-//Escuchamos el evento click en el botón vaciar, igualando la longitud a 0, actualizando el carrito
+//Escuchamos el evento click en el botón vaciar
 botonVaciar.addEventListener('click', () => { 
     //////////////////////// SWEET ALERT ////////////////////////
     Swal.fire({
